@@ -1,0 +1,68 @@
+# Ignorar node_modules en todo el proyecto
+**/node_modules/
+
+# Ignorar archivos de entorno local
+.env
+.env.local
+.env.development
+.env.production
+
+# Ignorar archivos de configuración de IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignorar archivos de logs y temporales
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Ignorar archivos de compilación y dist
+dist/
+build/
+out/
+.next/
+
+# Ignorar archivos de Docker
+docker-compose.override.yml
+
+# Ignorar archivos de dependencias
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignorar archivos de TypeScript
+*.tsbuildinfo
+
+# Ignorar archivos de cobertura de pruebas
+coverage/
+.nyc_output/
+
+# Ignorar archivos de sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de caché
+.cache/
+.temp/
+
+# Ignorar archivos de configuración local de Docker
+docker-compose.local.yml
+
+# Ignorar archivos de configuración de Prometheus y Grafana (si no se desea versionar)
+/prometheus/data/
+/grafana/data/
+
+# Ignorar archivos generados por Next.js
+.next/
+out/
+
+# Ignorar archivos generados por NestJS
+dist/

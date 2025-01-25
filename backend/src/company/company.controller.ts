@@ -1,0 +1,54 @@
+import { Controller, Get, Post, Body, UseGuards, Request, Param } from '@nestjs/common';
+import { CompanyService } from './company.service';
+import { LocalAuthGuard } from '../auth/local-auth.guard';
+
+@Controller('company')
+export class CompanyController {
+  constructor(private readonly companyService: CompanyService) {}
+
+  @UseGuards(LocalAuthGuard)
+  @Post('create')
+  async createCompany(@Body('name') name: string, @Request() req) {
+    return this.companyService.createCompany(name, req.user.id);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('add-money')
+  async addMoneyToCompany(
+    @Body('companyId') companyId: number,
+    @Body('amount') amount: number,
+    @Request() req,
+  ) {
+    return this.companyService.addMoneyToCompany(companyId, amount, req.user.id);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('calculate-profits')
+  async calculateDailyProfits(@Body('companyId') companyId: number) {
+    return this.companyService.calculateDailyProfits(companyId);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('request-employment')
+  async requestEmployment(@Body('companyId') companyId: number, @Request() req) {
+    return this.companyService.requestEmployment(companyId, req.user.id);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('accept-employment-request/:requestId')
+  async acceptEmploymentRequest(@Param('requestId') requestId: number, @Request() req) {
+    return this.companyService.acceptEmploymentRequest(requestId, req.user.id);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('reject-employment-request/:requestId')
+  async rejectEmploymentRequest(@Param('requestId') requestId: number, @Request() req) {
+    return this.companyService.rejectEmploymentRequest(requestId, req.user.id);
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Get('employment-requests/:companyId')
+  async getEmploymentRequests(@Param('companyId') companyId: number, @Request() req) {
+    return this.companyService.getEmploymentRequests(companyId, req.user.id);
+  }
+}
