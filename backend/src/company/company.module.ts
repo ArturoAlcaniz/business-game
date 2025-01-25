@@ -4,7 +4,6 @@ import { Company } from './company.entity';
 import { EmploymentRequest } from './employment-request.entity';
 import { CompanyService } from './company.service';
 import { CompanyController } from './company.controller';
-import { UserModule } from '../user/user.module';
 import { User } from 'src/user/user.entity';
 import { MailService } from 'src/utils/mail.service';
 import { QueueModule } from 'src/queue/queue.module';

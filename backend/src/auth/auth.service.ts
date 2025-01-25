@@ -32,4 +32,8 @@ export class AuthService {
     user.password = hashedPassword;
     return this.userService.create(user);
   }
+
+  decode(token: any) {
+    return this.jwtService.verify(token, { secret: 'secretKey' }); // Asegúrate de usar la misma clave secreta
+  }
 }

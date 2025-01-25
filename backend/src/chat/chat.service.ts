@@ -13,8 +13,8 @@ export class ChatService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async sendMessage(userId: number, content: string): Promise<Message> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
+  async sendMessage(username: string, content: string): Promise<Message> {
+    const user = await this.userRepository.findOne({ where: { username: username } });
     if (!user) throw new Error('Usuario no encontrado');
 
     const message = this.messageRepository.create({

@@ -3,20 +3,19 @@ import { useRouter } from 'next/router';
 import io from 'socket.io-client';
 import { useNotifications } from '../../context/NotificationContext';
 
-const socket = io('http://localhost:3001');
-
 interface Message {
-    id: number;
-    content: string;
-    user: {
-      username: string;
-    };
-    createdAt: Date;
+  id: number;
+  content: string;
+  user: {
+    username: string;
+  };
+  createdAt: Date;
 }
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([]);;
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [socket, setSocket] = useState<any>(null);
   const router = useRouter();
   const { notifications, addNotification } = useNotifications();
 
@@ -28,33 +27,39 @@ export default function ChatPage() {
       return;
     }
 
-    // Configurar el socket con el token de autenticación
-    socket.auth = { token };
-    socket.connect();
+    const newSocket = io('http://localhost:3001', {
+      transports: ['websocket'],
+      auth: {
+        token: token, // Envía el token JWT aquí
+      },
+    });
 
     // Escuchar nuevos mensajes
-    socket.on('newMessage', (message: Message) => {
+    newSocket.on('newMessage', (message: Message) => {
       setMessages((prevMessages) => [message, ...prevMessages]);
     });
 
     // Escuchar nuevas notificaciones
-    socket.on('newNotification', (notification) => {
+    newSocket.on('newNotification', (notification: any) => {
       addNotification(notification);
     });
 
     // Obtener los últimos mensajes al cargar la página
-    socket.emit('getMessages');
-    socket.on('lastMessages', (messages) => {
+    newSocket.emit('getMessages');
+    newSocket.on('lastMessages', (messages: any) => {
       setMessages(messages);
     });
 
+    setSocket(newSocket);
+
+    // Limpiar la conexión al desmontar el componente
     return () => {
-      socket.disconnect();
+      newSocket.disconnect();
     };
   }, [router, addNotification]);
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
+    if (socket && newMessage.trim()) {
       socket.emit('sendMessage', newMessage);
       setNewMessage('');
     }

@@ -7,7 +7,15 @@ import { UserService } from '../user/user.service';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly userService: UserService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request: any) => {
+          // Extrae el token del objeto auth
+          if (request.handshake?.auth?.token) {
+            return request.handshake.auth.token;
+          }
+          return null;
+        },
+      ]),    
       ignoreExpiration: false,
       secretOrKey: 'secretKey',
     });
