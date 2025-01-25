@@ -17,7 +17,7 @@ export default function EmploymentRequests() {
     const fetchRequests = async () => {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:3001/company/employment-requests/${companyId}`,
+        `http://localhost:3100/company/employment-requests/${companyId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ export default function EmploymentRequests() {
   const handleAccept = async (requestId: any) => {
     const token = localStorage.getItem('token');
     const response = await fetch(
-      `http://localhost:3001/company/accept-employment-request/${requestId}`,
+      `http://localhost:3100/company/accept-employment-request/${requestId}`,
       {
         method: 'POST',
         headers: {
@@ -59,7 +59,7 @@ export default function EmploymentRequests() {
   const handleReject = async (requestId: any) => {
     const token = localStorage.getItem('token');
     const response = await fetch(
-      `http://localhost:3001/company/reject-employment-request/${requestId}`,
+      `http://localhost:3100/company/reject-employment-request/${requestId}`,
       {
         method: 'POST',
         headers: {

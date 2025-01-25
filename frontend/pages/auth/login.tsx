@@ -9,7 +9,7 @@ export default function Login() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const response = await fetch('http://localhost:3001/auth/login', {
+    const response = await fetch('http://localhost:3100/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

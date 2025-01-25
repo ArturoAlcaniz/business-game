@@ -6,7 +6,7 @@ export default function Dashboard() {
 
   const handleAddDailyMoney = async () => {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3001/user/add-daily-money', {
+    const response = await fetch('http://localhost:3100/user/add-daily-money', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   const handleUpdateStudyLevel = async () => {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3001/user/update-study-level', {
+    const response = await fetch('http://localhost:3100/user/update-study-level', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ export default function CreateCompany() {
     e.preventDefault();
 
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3001/company/create', {
+    const response = await fetch('http://localhost:3100/company/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

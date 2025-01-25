@@ -12,7 +12,7 @@ export default function RequestEmployment() {
 
     const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:3001/company/request-employment', {
+      const response = await fetch('http://localhost:3100/company/request-employment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

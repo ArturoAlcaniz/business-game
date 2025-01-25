@@ -27,7 +27,7 @@ export default function ChatPage() {
       return;
     }
 
-    const newSocket = io('http://localhost:3001', {
+    const newSocket = io('http://localhost:3100', {
       transports: ['websocket'],
       auth: {
         token: token, // Envía el token JWT aquí
