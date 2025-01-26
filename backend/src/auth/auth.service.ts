@@ -22,6 +22,23 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.id };
+
+    const today = new Date();
+
+    if (user.lastLoginDate && String(user.lastLoginDate) === new Date(new Date().getTime() - (24 * 60 * 60 * 1000)).toISOString().split('T')[0]) {
+      // Si se conectó ayer, incrementa el contador
+      user.consecutiveLoginDays += 1;
+    } else if (!user.lastLoginDate || (user.lastLoginDate && String(user.lastLoginDate) !== new Date().toISOString().split('T')[0])) {
+      // Si no se conectó ayer ni hoy, reinicia el contador
+      user.consecutiveLoginDays = 1;
+    }
+
+    // Guarda los cambios en la base de datos
+    await this.userService.updateUser(user.id, {
+      consecutiveLoginDays: user.consecutiveLoginDays,
+      lastLoginDate: new Date(),
+    });
+    
     return {
       access_token: this.jwtService.sign(payload),
     };

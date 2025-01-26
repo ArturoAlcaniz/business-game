@@ -8,20 +8,22 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
+        // Extrae el token del handshake de WebSocket
         (request: any) => {
-          // Extrae el token del objeto auth
           if (request.handshake?.auth?.token) {
             return request.handshake.auth.token;
           }
           return null;
         },
-      ]),    
+        // Extrae el token del encabezado de autorización (Bearer token)
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ]),
       ignoreExpiration: false,
-      secretOrKey: 'secretKey',
+      secretOrKey: 'secretKey', // Asegúrate de usar la misma clave secreta que en el AuthModule
     });
   }
 
   async validate(payload: any) {
-    return this.userService.findOne(payload.username);
+    return this.userService.findOne(payload.username); // Valida el usuario
   }
 }

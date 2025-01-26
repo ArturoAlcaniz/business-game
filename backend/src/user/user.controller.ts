@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -12,9 +12,13 @@ export class UserController {
     return this.userService.updateStudyLevel(req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard) // Ejemplo de endpoint protegido
+  @UseGuards(JwtAuthGuard)
   @Post('add-daily-money')
   async addDailyMoney(@Request() req) {
-    return this.userService.addDailyMoney(req.user.id);
+    try {
+      return await this.userService.addDailyMoney(req.user.id);
+    } catch (error) {
+      throw new BadRequestException(error.message); // Devuelve un error 400 si ya recibió dinero hoy
+    }
   }
 }

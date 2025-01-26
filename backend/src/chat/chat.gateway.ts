@@ -74,8 +74,15 @@ export class ChatGateway {
 
   @UseGuards(AuthGuard('jwt'))
   @SubscribeMessage('getMessages')
-  async handleGetMessages(@ConnectedSocket() client: Socket): Promise<void> {
-    const messages = await this.chatService.getLastMessages();
-    client.emit('lastMessages', messages);
+  async handleGetMessages(
+    @MessageBody() data: { limit?: number; offset?: number } | null, // Acepta data como null o undefined
+    @ConnectedSocket() client: Socket,
+  ): Promise<void> {
+    // Establece valores por defecto si data es null o undefined
+    const limit = data?.limit ?? 50; // Valor por defecto: 50
+    const offset = data?.offset ?? 0; // Valor por defecto: 0
+  
+    const messages = await this.chatService.getLastMessages(limit, offset);
+    client.emit('lastMessages', messages); // Envía los mensajes paginados al cliente
   }
 }

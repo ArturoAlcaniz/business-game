@@ -38,4 +38,22 @@ export class User {
 
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
+
+  @Column({ 
+    type: 'date', 
+    transformer: {
+      from: (value: Date) => new Date(value).toISOString().split('T')[0].slice(0,10), // format the Date to YYYY-MM-DD
+      to: (value: any) => value,
+    },
+    nullable: true }) // Última fecha de inicio de sesión
+  lastDailyMoneyDate: Date;
+
+  @Column({ 
+    type: 'date', 
+    transformer: {
+      from: (value: Date) => new Date(value).toISOString().split('T')[0].slice(0,10), // format the Date to YYYY-MM-DD
+      to: (value: any) => value,
+    },
+    nullable: true }) // Última fecha de inicio de sesión
+  lastLoginDate: Date;
 }

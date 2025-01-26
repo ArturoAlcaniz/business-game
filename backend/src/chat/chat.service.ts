@@ -25,11 +25,15 @@ export class ChatService {
     return this.messageRepository.save(message);
   }
 
-  async getLastMessages(limit: number = 50): Promise<Message[]> {
+  async getLastMessages(limit: number = 50, offset: number = 0): Promise<Message[]> {
+    const maxLimit = 50; // Límite máximo de mensajes por solicitud
+    const safeLimit = Math.min(limit, maxLimit);
+
     return this.messageRepository.find({
-      relations: ['user'],
-      order: { createdAt: 'DESC' },
-      take: limit,
+      relations: ['user'], // Incluye la relación con el usuario
+      order: { createdAt: 'DESC' }, // Ordena por fecha de creación (más recientes primero)
+      skip: offset, // Salta los primeros 'offset' mensajes
+      take: safeLimit, // Limita el número de mensajes devueltos
     });
   }
 }

@@ -46,10 +46,20 @@ export class UserService {
   async addDailyMoney(userId: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new Error('Usuario no encontrado');
+  
+    // Verifica si el usuario ya recibió dinero hoy
+    if (user.lastDailyMoneyDate != undefined && String(user.lastDailyMoneyDate) === new Date().toISOString().split('T')[0]) {
+      throw new Error('Ya has recibido dinero hoy');
+    }
 
-    // Añadir dinero automático (100$ por nivel de estudios)
-    user.balance += 100 * user.studyLevel;
+    return await this.updateUser(user.id, {
+      balance: user.balance += 100 * user.studyLevel,
+      lastDailyMoneyDate: new Date(),
+    });
+  }
 
-    return this.userRepository.save(user);
+  async updateUser(userId: number, updateData: Partial<User>): Promise<User> {
+    await this.userRepository.update(userId, updateData);
+    return this.userRepository.findOne({ where: { id: userId } });
   }
 }
